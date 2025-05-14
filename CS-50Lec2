@@ -1,0 +1,451 @@
+CS -50 LEC 2
+
+Array - an array is a collection of elements of the same data type, stored in contiguous memory locations. Arrays allow you to store multiple values in a single variable.
+
+
+example- int scores[3];
+
+int main(void){
+
+int scores[3];
+for(int i = 0; i<3;i++){
+printf("Enter score: ");
+scanf("%d",scores[i]);
+}
+
+printf("Average: %f\n",scores[0] + socres[1] + scores[2] / 3.0);
+}
+
+
+Strings -strings are represented as arrays of characters, terminated by a null character ('\0'). C does not have a built-in string type like some other languages, so string manipulation often involves working with character arrays and using standard library functions.
+Example-
+
+char str1[] = "Hello";         // Automatically null-terminated
+char str2[6] = "Hello";        // Explicit size (5 characters + 1 for '\0')
+char str3[] = {'H','e','l','l','o','\0'}; // Manual character array
+
+we use #include<string.h> header file for using a string.
+
+
+we use ctype.h header file for checking the string is uppercase or lowercase and to change it.
+
+Example of lowercase to uppercase-
+
+#include <stdio.h>
+#include <ctype.h>
+
+int main() {
+    char str[100];
+
+    
+    printf("Enter a string: ");
+    fgets(str, sizeof(str), stdin);
+
+
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (islower((unsigned char)str[i])) {
+            str[i] = toupper((unsigned char)str[i]);
+        }
+        
+    }
+
+
+    printf("Converted string: %s", str);
+
+    return 0;
+}
+
+
+OR
+
+#include<stdio.h>
+#include<ctype.h>
+
+int main() {
+    char str[100];
+
+    
+    printf("Enter a string: ");
+    fgets(str, sizeof(str), stdin);
+	
+    printf("After: ");	
+    for(int i = 0, n = strlen(str); i<n; i++){
+    printf("%s",toupper(str[i]));
+    }
+    printf("\n");
+    return 0;
+    }
+
+-------------------------------------------------------
+
+Command line arguments-
+
+
+argc - argument count
+argv - argument vector (it is an array)
+
+example- 
+#include<stdio.h>
+
+int main(int argc,char *argv[])
+{
+
+for(int i = 0; i<argc;i++)
+{
+printf("%s\n",argv[i]);
+
+}
+}
+
+Output- It will print the program name and the string that user has provided.
+--------------------------------------------------------------
+
+Status codes- status codes are integer values returned by a function or program to indicate success or failure.
+Return 0 on success
+Return non-zero such as return 1 (e.g., 1, EXIT_FAILURE, or a custom code) for different error types.
+
+we can use echo$? to see what the exit status is.
+which will show the status code to check either the code is failed or success.
+------------------------------------------------------------
+
+Cipher converts tthe plaintext to ciphertext which is encrypted.
+key is provided to cipher for safety.
+
+encryption algorithm- caesar cipher. 
+
+--------------------------------------------------------------
+
+Section 2 (2nd video notes)
+-----------------------------------------------------------------
+
+Array
+Example - Create an arrayof size 5 where each element is two times the previous and the first element is 1.
+Print the array,integer by integer.
+
+
+#include<stdio.h>
+
+int main(void){
+
+int numbers[5];
+
+numbers[0] = 1;
+for(int i =1; i<5; i++){
+numbers[i] = numbers[i -1] * 2;
+}
+
+
+// it is same as int numbers[5] ={1,2,4,8,16};
+
+for(int i = 0; i < 5; i++){
+printf("%i\n",numbers[i]);
+}
+}
+
+----------------------------------------------------------------
+
+Strings are just array of characters.
+
+every string has '\0' null character at the end of the string.
+
+
+
+Example- 
+
+Check if a lowercase strings characters are in alphabetical order. If yes,print"Yes" and If no, print"No".
+
+#include<stdio.h>
+#include<string.h>
+
+int main(void){
+    char str[20];
+    printf("Input: ");
+    fgets(str,sizeof(str),stdin);
+
+
+    for (int i =0; i<strlen(str);i++){
+
+        if(str[i] < str[i - 1]){
+            printf("No \n");
+            return 0;
+        }
+    }
+
+        printf("Yes \n");
+}
+
+
+------------------------------------------------------------
+
+Command Line Arguments
+
+int argc - Argument count (it counts how many command lin arrguments we see in the terminal
+
+char *argv[] - argument vector (array of string)
+
+example 
+./caesar 13 - here caesar is the name of the program which is tstored in argv[0] and 13 is stored in argv[1] and here the argument count is 2 as we have two command line argument.
+
+#include<stdio.h>
+#include<string.h>
+#include<ctype.h>
+
+int main(int argc, char *argv[]){
+
+if(argc != 2){
+    printf("Please Provide a word.\n");
+    return 1;
+}
+
+    char *str = argv[1];
+    printf("Input: ");
+    fgets(str,sizeof(str),stdin);
+
+for (int i = 0,len = strlen(str); i < len; i++) {
+        if (!isalpha(str[i])) {
+            printf("Invalid input: only alphabetic characters are allowed.\n");
+            return 2;
+        }
+}
+
+    for (int i =1,len = strlen(str); i<len;i++){
+
+        if(str[i] < str[i - 1]){
+            printf("No \n");
+            return 0;
+        }
+    }
+
+        printf("Yes \n");
+}
+
+--------------------------------------------------------
+
+Shorts-
+
+1.Functions
+
+
+Why use functions?
+1. Organization
+ Functions help break up a complicated problem into more
+manageable subparts.
+2.Simplification
+ Smaller components tend to be easier to design,
+implement, and debug.
+3. Reusability
+ Functions can be recycled; you only need to write them
+once, but can use them as often as you need!
+
+Function Declarations
+● The first step to creating a function is to declare it. This
+gives the compiler a heads-up that a user-written
+function appears in the code.
+● Function declarations should always go atop your code,
+before you begin writing main().
+● There is a standard form that every function
+declaration follows
+
+return-type name(argument-list);
+
+The return-type is what kind of variable the
+function will output.
+● The name is what you want to call your function.
+● The argument-list is the comma-separated set of
+inputs to your function, each of which has a type and a
+name
+
+example - 
+int add_two_ints(int a, int b);
+
+Function Definitions
+● The second step to creating a function is to define it.
+This allows for predictable behavior when the function
+is called with inputs.
+example- 
+int add_two_ints(int a, int b);
+
+int add_two_ints(int a, int b)
+{
+int sum; // declare variable
+sum = a + b; // calculate the sum
+return sum; // give result back
+}
+
+
+Function Calls
+● Now that you’ve created a function, time to use it!
+● To call a function, simply pass it appropriate arguments
+and assign its return value to something of the correct
+type.
+
+example- add_two_ints(4,5)  //Function call
+
+------------------------------------------------------------
+
+2.Variables and Scopes
+
+Scope is a characteristic of a variable that defines
+from which functions that variable may be
+accessed.
+● Local variables can only be accessed within the
+functions in which they are created.
+● Global variables can be accessed by any function in the
+program.
+
+example of local variable-
+
+int triple(int x); // declaration
+int main(void)
+{
+int result = triple(5);
+}
+int triple(int x)
+{
+return x * 3;
+}
+
+Here, x is local to the function triple(). No other
+function can refer to that variable, not even
+main(). result is local to main().
+
+Global variables exist too. If a variable is declared
+outside of all functions, any function may refer to
+it. it is a global variable.
+example-
+int triple(int x); // declaration
+#include <stdio.h>
+float global = 0.5050;
+int main(void)
+{
+triple();
+printf(“%f\n”, global);
+}
+void triple(void)
+{
+global *= 3;
+}
+
+
+Why does this distinction matter? For the most
+part, local variables in C are passed by value in
+function calls.
+● When a variable is passed by value, the callee
+receives a copy of the passed variable, not the
+variable itself.
+● That means that the variable in the caller is
+unchanged unless overwritten.
+
+
+-------------------------------------------------------------
+
+Array
+
+Arrays are a fundamental data structure, and they
+are extremely useful!
+● We use arrays to hold values of the same type at
+contiguous memory locations
+
+
+An array is a block of contiguous
+space in memory.
+…which has been partitioned into
+small, identically-sized blocks of
+space called elements…
+…each of which can store a certain
+amount of data…
+…all of the same data type such as
+int or char…
+…and which can be accessed directly
+by an index.
+In C, the elements of an array are indexed starting
+from 0.
+● This is one of the major reasons we count from zero!
+● If an array consists of n elements, the first element
+is located at index 0. The last element is located at
+index (n-1).
+
+
+Array declarations
+
+type name[size];
+
+The type is what kind of variable each element of the
+array will be.
+● The name is what you want to call your array.
+● The size is how many elements you would like your
+array to contain.
+
+example- int student_grades[40];
+
+When declaring and initializing an array
+simultaneously, there is a special syntax that may
+be used to fill up the array with its starting values.
+
+// instantiation syntax
+bool truthtable[] = { false, true, true };
+
+// individual element syntax
+bool truthtable[3];
+truthtable[0] = false;
+truthtable[1] = true;
+truthtable[2] = true;
+
+
+Arrays can consist of more than a single dimension.
+You can have as many size specifiers as you wish.
+exxample- bool battleship[10][10];
+● You can choose to think of this as either a 10x10
+grid of cells.
+● In memory though, it’s really just a 100-element one-
+dimensional array.
+● Multi-dimensional arrays are great abstractions to help
+visualize game boards or other complex
+representations
+
+Recall that most variables in C are passed by value
+in function calls.
+● Arrays do not follow this rule. Rather, they are
+passed by reference. The callee receives the actual
+array, not a copy of it.
+
+----------------------------------------------------------------
+
+command line arguments
+
+int main(int argc,char *argv[]){
+}
+
+These two special arguments enable you to know
+what data the user provided at the command line
+and how much data they provided.
+
+argc (argument count)
+● This integer-type variable will store the number of
+command-line arguments the user typed when the
+program was executed.
+
+example- command = /greedy, argc = 1
+
+command = ./greedy 1024 cs50, argc = 3
+
+
+argv (argument vector)
+● This array of strings stores, one string per element, the
+actual text the user typed at the command-line when
+the program was executed.
+● The first element of argv is always found at argv[0].
+The last element of argv is always found at
+argv[argc-1].
+
+example-
+Let’s assume the user executes the greedy program as
+follows
+./greedy 1024 cs50
+
+argv indices    argv contents
+argv[0]        “./greedy”
+argv[1]        “1024”
+argv[2]        “cs50”
+
+------------------------------------------------------
