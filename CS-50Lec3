@@ -1,0 +1,577 @@
+CS-50 Lecture 3
+
+----------------------------------------------------------------------------
+ALGORITHMS
+
+
+Algorithm is a step by step instructions to solve a problem.
+
+
+1.linear search - It is used to find the position of a target value (also called a "key") within a list.
+Linear search checks each element of the list one by one until the desired element is found or the list ends. but it isnt effiecient if the daata is at the last or any other location.
+running time of linear search is 0(n).
+
+2.binary search-It is an efficient algorithm used to find the position of a target value within a sorted array or list. It works by repeatedly dividing the search interval in half. but it isnt efficient if the data is random that is unsorted.
+running time of binary search is O(log n)
+
+
+the running time of an algorithm is denoted by O and is called as Big O notation.
+worst case running time
+example- O(n) - linear search running time
+         O(log n) - binary search running time
+	 O(n log n)
+	 O(n^2)
+	 O(1)
+
+Best case running time
+example-
+omega-	Ω(n^2)
+        Ω(n log n)
+	Ω(n)
+	Ω(log n)
+	Ω(1)
+
+
+Linear search example in C.
+
+#include <stdio.h>
+#include <string.h>
+
+int main(void)
+{
+    // An array of strings
+    char *strings[] = {"battleship", "boot", "cannon", "iron", "thimble", "top hat"};
+
+    // Buffer to store input
+    char s[100];
+
+    printf("String: ");
+    scanf("%99s", s);  // Limit input to avoid buffer overflow
+
+    for (int i = 0; i < 6; i++)
+    {
+        if (strcmp(strings[i], s) == 0)
+        {
+            printf("Found\n");
+            return 0;
+        }
+    }
+    printf("Not found\n");
+    return 1;
+}
+
+--------------------------------------------------------------------------
+
+Data Structures
+Data structures are ways to store and organize data efficiently so that operations like access, insertion, and deletion can be performed effectively. In C, data structures are implemented using variables, arrays, pointers, and structures.
+
+example of structure-
+
+// Implements a phone book with structs
+
+
+#include <stdio.h>
+#include <string.h>
+
+typedef struct
+{
+  const char *name;
+   const char *number;
+} person;
+
+int main(void)
+{
+    person people[3];
+
+    people[0].name = "Ram";
+    people[0].number = "987654321";
+
+    people[1].name = "John";
+    people[1].number = "123456789";
+
+    people[2].name = "Kim";
+    people[2].number = "2468102333";
+
+    // Search for name
+    char name[100];
+    printf("Enter name: ");
+    scanf("%s",name);
+
+
+    for (int i = 0; i < 3; i++)
+    {
+        if (strcmp(people[i].name, name) == 0)
+        {
+            printf("Found %s\n", people[i].number);
+            return 0;
+        }
+    }
+    printf("Not found\n");
+    return 1;
+}
+
+
+-----------------------------------------------------------------------
+Sorting-
+Sorting is the act of taking an unsorted list of values and transforming this list into a sorted one.
+
+1.Selection Sort-it is a simple comparison-based sorting algorithm. It divides the input list into two parts: the sorted part at the beginning and the unsorted part at the end. The algorithm repeatedly selects the smallest (or largest) element from the unsorted part and moves it to the end of the sorted part.
+
+working-
+Start with the first element. Assume it is the minimum.
+
+Compare it with the rest of the list to find the actual minimum.
+
+Swap the found minimum with the first element.
+
+Repeat the process for the second element, then the third, and so on until the list is sorted.
+
+it is not efficient for large datasets. 
+running time is O(n^2).
+
+---------------------------------------------------------------------
+2.Bubble sort-Bubble Sort is one of the simplest sorting algorithms. It works by repeatedly swapping adjacent elements if they are in the wrong order. This "bubbles" the largest (or smallest) value to its correct position with each pass through the list.
+
+working-
+Compare the first and second elements.
+
+If the first is greater than the second, swap them.
+
+Move to the next pair and repeat until the end of the list.
+
+After each pass, the largest unsorted element is at the end.
+
+Repeat the process for the remaining unsorted elements.
+
+Running time (time complexity)-
+Best case: O(n) — when the list is already sorted (with optimization)
+
+Average case: O(n²)
+
+Worst case: O(n²)
+
+Pros:
+ Very easy to understand and implement
+
+ Good for teaching sorting concepts
+
+ Detects if the list is already sorted (with the swapped flag)
+
+ Cons:
+
+Inefficient on large lists
+ Not suitable for performance-critical applications
+
+-------------------------------------------------------------------
+
+recursion- the function calling itself.
+
+recursion example of "#" pyramid.
+
+#include<stdio.h>
+
+void draw(int n);
+
+int main () {
+
+int height;
+printf("Enter the height of pyramid: ");
+scanf("%d",&height);
+
+draw(height);
+
+return 0;
+};
+
+void draw(int n){
+
+if(n ==0){
+    return;
+}
+
+draw(n-1);
+
+for(int i=0;i<n;i++){
+    printf("#");
+}
+printf("\n");
+
+
+}
+
+
+-------------------------------------------------------------------
+In selection sort and bubble sort we were swapping the numbers but in merge sort we are checking the sorted numbers from two sets/arrays and creating a different space/array of larger size and merging both the arrays in newly created array.This was the case if the numbers in both the arrays are sorted.
+	Now if the numbers in the array are unsorted .For example array of 8 numbers. first we will sort the left half of the array and then right half of the array and then we will merge the arrays.Here sorting means we will create a new array and in that aarray we will merge the numbers by comparing it and in ascending order.
+
+
+Merge sort - 
+Merge Sort is a divide and conquer algorithm. It works by:
+
+    Dividing the array into two halves.
+
+    Recursively sorting each half.
+
+    Merging the two sorted halves into a new sorted array.
+
+It is efficient, stable, and guarantees O(n log n) performance for all inputs.
+
+
+Running time - 0(n log n)
+
+working-
+Divide the unsorted array into two halves until you reach arrays of size 1.
+
+Conquer by sorting the smaller arrays (trivially sorted if size 1).
+
+Combine by merging two sorted arrays into one larger sorted array.
+
+example-
+Sort: [6, 3, 8, 5]
+
+    Divide → [6, 3] and [8, 5]
+
+    Further divide → [6] [3] and [8] [5]
+
+    Merge → [3, 6] and [5, 8]
+
+    Final merge → [3, 5, 6, 8]
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+Section 3
+
+------------------------------------------------------------------
+Linear search -  We look at an element one by one and we try to find the one we're looking for.
+
+Binary search - If the list of objects is sorted, then we will look at middle and think alphabetically whether it is on right or left. so consider it is on right and then we will go to the middle of right half now again we will check alphabetically whether it is on left or right. now its on left so we will go to left and we would find the object.
+
+
+Runtime for  bot algorithms-
+
+Linear Search - Worst case runtime is O(n) and Best case is omega(1)
+
+Binary Search - Worst case runtime is O(log base 2 n) and Best case is omega(1).
+
+If the list is sorted and data is less then we can use binary search.
+
+Sorting-
+
+Runtime -
+Algorithm 	|	O	   |	Ω
+Merge Sort	|	O(Nlog(N)) |	Ω (Nlog(N))
+Selection Sort	|	O(N²) 	   |	Ω (N²)
+Bubble Sort 	|	O(N²) 	   |	Ω (N)
+
+
+-------------------------------------------------------------------
+data structure 
+
+Structs
+
+example-
+typedef struct
+{
+
+string name;
+int votes;
+}
+candidate;
+
+Here name and votes are attributes/members and name of the data structure is candidate.
+
+candidate president; 
+
+here president is variable name.
+To access it we use "." notaion.
+
+example- president.name = "ABC";
+         president.votes = "400000000";
+
+
+If there are many candidates we can create a array.
+and we can access it by its index and attribute, such as candidates[0].name 
+
+example-
+Create an array of three candidates
+Populate an array using user’s input
+Search the array to find the most votes awarded to
+any single candidate
+
+
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct{
+
+    char name[20];
+    int votes;
+} candidate;
+
+
+
+
+
+int main (void) {
+
+const int num = 3;
+
+candidate candidates[num];
+
+//Populate the array with users input
+
+for(int i = 0; i<num;i++){
+    printf("Enter name of candidate: ");
+    scanf("%s",candidates[i].name);
+
+    printf("Enter the votes of candidate: ");
+    scanf("%d",&candidates[i].votes);
+}
+
+int highest_vote = 0;
+
+for(int i = 0; i < num;i++){
+
+    if(candidates[i].votes > highest_vote){
+        highest_vote = candidates[i].votes;
+    }
+}
+printf("Highest vote is : %d\n",highest_vote);
+
+for(int i=0; i<num; i++){
+    if (candidates[i].votes == highest_vote){
+        printf("The candidate is: %s\n",candidates[i].name);
+    }
+}
+}
+
+----------------------------------------------------------
+
+Recursion
+
+Factorial example-
+
+#include<stdio.h>
+
+int fact(int n);
+
+int main(void){
+
+    int number;
+
+    do{
+        printf("Enter the number: ");
+        scanf("%d",&number);
+    }
+    while(number<0);
+
+    int result = fact(number); //call the factorial function
+    printf("The factorial of %d is %d\n",number,result);
+}
+
+int fact(int n){
+
+//base case
+if(n == 0){
+    return 1;
+}
+
+else{
+//recursive case
+
+return n * fact(n-1);
+
+}
+}
+
+------------------------------------------------------------------
+-----------------------------------------------------------------------
+
+Shorts-
+
+1.Linear Search - It is an algorithm to find an element in an array.
+
+ In linear search, the idea of the algorithm is to iterate across
+the array from left to right, searching for a specified element.
+
+In pseudocode:
+Repeat, starting at the first element:
+• If the first element is what you’re looking for (the target), stop.
+• Otherwise, move to the next element.
+
+Worst-case scenario: We have to look through the entire
+array of n elements, either because the target element is the
+last element of the array or doesn’t exist in the array at all.
+• Best-case scenario: The target element is the first element of
+the array, and so we can stop looking immediately after we
+start.
+------------------------------------------------------------------------
+
+2.Binary search -In binary search, the idea of the algorithm is to divide and
+conquer, reducing the search area by half each time, trying
+to find a target number.
+
+In pseudocode:
+• Repeat until the (sub)array is of size 0:
+• Calculate the middle point of the current (sub)array.
+• If the target is at the middle, stop.
+• Otherwise, if the target is less than what’s at the middle, repeat,
+changing the end point to be just to the left of the middle.
+• Otherwise, if the target is greater than what’s at the middle,
+repeat, changing the start point to be just to the right of the
+middle.
+
+
+• Worst-case scenario: We have to divide a list of n elements
+in half repeatedly to find the target element, either because
+the target element will be found at the end of the last
+division or doesn’t exist in the array at all.
+• Best-case scenario: The target element is at the midpoint of
+the full array, and so we can stop looking immediately after
+we start.
+
+---------------------------------------------------------------------
+
+
+3.Bubble Sort-
+
+• In bubble sort, the idea of the algorithm is to move higher valued
+elements generally towards the right and lower value elements
+generally towards the left.
+In pseudocode:
+• Set swap counter to a non-zero value
+• Repeat until the swap counter is 0:
+• Reset swap counter to 0
+• Look at each adjacent pair
+• If two adjacent elements are not in order, swap them and add one to the swap
+counter.
+
+ Worst-case scenario: The array is in reverse order; we have
+to “bubble” each of the n elements all the way across the
+array, and since we can only fully bubble one element into
+position per pass, we must do this n times.
+• Best-case scenario: The array is already perfectly sorted, and
+we make no swaps on the first pass.
+
+
+------------------------------------------------------------
+
+4.Selection Sort-
+
+• In selection sort, the idea of the algorithm is to find the
+smallest unsorted element and add it to the end of the
+sorted list.
+In pseudocode:
+• Repeat until no unsorted elements remain:
+• Search the unsorted part of the data to find the smallest value
+• Swap the smallest found value with the first element of the unsorted part
+
+• Worst-case scenario: We have to iterate over each of the n
+elements of the array (to find the smallest unsorted
+element) and we must repeat this process n times, since only
+one element gets sorted on each pass.
+• Best-case scenario: Exactly the same! There’s no way to
+guarantee the array is sorted until we go through this
+process for all the elements.
+
+-----------------------------------------------------------------
+
+5.Recursion-
+The function calling itself. 
+example- factorial of a number.
+
+fact(1) = 1
+fact(2) = 2 * fact(1)
+fact(3) = 3 * fact(2)
+fact(4) = 4 * fact(3)
+fact(5) = 5 * fact(4)
+
+function for factorial-
+int fact(int n)
+{
+if (n == 1)
+{
+return 1;
+}
+else
+{
+return n * fact(n-1);
+}
+}
+
+
+Multiple base cases: The Fibonacci number sequence is
+defined as follows:
+• The first element is 0.
+• The second element is 1.
+• The nth element is the sum of the (n-1)th and (n-2)th elements.
+• Multiple recursive cases: The Collatz conjecture
+
+
+The Collatz conjecture is applies to positive integers and
+speculates that it is always possible to get “back to 1” if you
+follow these steps:
+• If n is 1, stop.
+• Otherwise, if n is even, repeat this process on n/2.
+• Otherwise, if n is odd, repeat this process on 3n + 1.
+
+
+• Write a recursive function collatz(n) that calculates how
+many steps it takes to get to 1 if you start from n and recurse
+as indicated above.
+
+int collatz(int n)
+{
+// base case
+if (n == 1)
+return 0;
+// even numbers
+else if ((n % 2) == 0)
+return 1 + collatz(n/2);
+// odd numbers
+else
+return 1 + collatz(3*n + 1);
+}
+
+
+---------------------------------------------------------------
+
+6.Merge Sort-
+In merge sort, the idea of the algorithm is to sort smaller arrays
+and then combine those arrays together (merge them) in sorted
+order.
+• Merge sort leverages something called recursion.
+
+
+In pseudocode:
+• Sort the left half of the array (assuming n > 1)
+• Sort the right half of the array (assuming n > 1)
+• Merge the two halves together.
+
+Worst-case scenario: We have to split n elements up and
+then recombine them, effectively doubling the sorted
+subarrays as we build them up. (combining sorted 1-element
+arrays into 2-element arrays, combining sorted 2-element
+arrays into 4-element arrays…)
+• Best-case scenario: The array is already perfectly sorted. But
+we still have to split and recombine it back together with this
+algorithm.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
