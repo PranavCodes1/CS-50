@@ -1,0 +1,862 @@
+CS-50 LECTURE 4
+---------------------------------------------------------------
+
+
+Memory-
+
+
+
+Hexadecimals- 0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F.
+
+
+Pointer- it is a variable that stores the address of another variable.
+
+& - gives the address of operator
+
+* - dereference operato(gives the value at the addess stored in pointer.
+
+%p - used to print the address of the pointer.
+%d - used to print the integer(value).
+
+
+example-
+
+int main () {
+
+int n = 50;
+
+int *ptr = &n;
+
+printf("%d\n", *ptr);  // *ptr prints the value at n and only ptr will print the address of n.
+
+return 0;
+}
+
+output-50
+
+--------------------------------------------------------------
+
+string is declared as char *str;
+
+to print string we use %s
+
+example-
+
+int main(void){
+
+char *str = "HI!";
+
+printf("%s\n",s);
+}
+
+output- HI!
+
+
+example of comparing two strings-
+
+#include<stdio.h>
+#include<string.h>
+
+
+int main (void){
+
+char *s;
+char *t;
+
+printf("Enter the first  string: ");
+scanf("%s",s);
+
+printf("Enter the second string: ");
+scanf("%s",t);
+
+if(strcmp(s,t) == 0){
+    printf("Same \n");
+}
+else{
+    printf("Different\n");
+}
+
+}
+
+---------------------------------------------------------------
+
+example of use of malloc in string for copying whole string and capitalising only one character of the string.
+
+// Capitalizes a string
+
+#include <ctype.h>
+#include <stdio.h>
+#include <string.h>
+#include<stdlib.h>
+
+
+int main(void)
+{
+    // Get a string
+    char *s;
+    printf("Enter string: ");
+    scanf("%s",s);
+
+if (s == NULL)
+    {
+        return 1;
+    }
+
+    // Allocate memory for another string
+    char *t = malloc(strlen(s) + 1);
+    if (t == NULL)
+    {
+        return 1;
+    }
+
+    // Copy string into memory
+    strcpy(t, s);
+
+    // Capitalize copy
+    if (strlen(t) > 0)
+    {
+        t[0] = toupper(t[0]);
+    }
+
+    // Print strings
+    printf("s: %s\n", s);
+    printf("t: %s\n", t);
+
+    // Free memory
+    free(t);
+    return 0;
+}
+
+
+if there is a error  then malloc return NULL.
+
+strcpy(destination,source) is used for copying one string into other.
+
+we use malloc to dynamically allocate memory.
+and we use free() to free up the memory. always free the memory after execution to prevent memory leaks.
+
+----------------------------------------------------------------
+Valgrind
+
+It is the function to check errors related to memory, we use it in terminal 
+for example if we created a program called memory.c 
+so we will write -  make memory
+		    ./memory
+		    valgrind ./memory
+this valgrind ./memory gives us the errors related to memory.	    
+-------------------------------------------------------------------
+
+For swapping two numbers , we will use pass by reference that is pass by address instead of pass by value.
+the pass by value makes a copy of the value and pases it nut pass by reference passes the address of the variable.
+
+example of swap -
+
+//Swap two integers using pointers
+
+#include<stdio.h>
+
+
+void swap(int *a, int *b);
+
+
+int main(void){
+
+int x,y;
+
+printf("Enter first number: ");
+scanf("%d",&x);
+
+printf("Enter second number: ");
+scanf("%d",&y);
+
+swap(&x,&y);
+printf("the swap numbers are:%d and %d \n",x,y);
+
+}
+
+void swap(int *a, int *b){
+ int temp;
+ temp = *a;
+ *a = *b;
+ *b = temp;   
+
+}
+-----------------------------------------------------------
+Buffer- a chunk of memory that you are using for some purpose.
+A buffer is a finit size and we can potentially overflow it by going past the boundary of it. its example is loke allocating an array of 4 character, and trying to print fith or sixth.
+
+examples of buffer overflow are stack overflow and heap overflow.
+
+heap overflow- if we call malloc too many times then we might somehow overflow some other area of memory with the heap.
+ Definition:
+
+A heap overflow occurs when a program writes more data to a heap-allocated memory block than it was allocated for.
+
+What is the heap?
+
+The heap is a large memory area used for dynamic memory allocation, e.g., via malloc() or calloc().
+
+How heap overflow happens:
+
+    Writing past the end of a dynamically allocated array.
+
+    Not checking array bounds.
+
+
+
+
+A stack overflow occurs when too much memory is used on the call stack.
+
+What is the stack?
+
+The stack is a small, fixed-size memory area used for:
+
+    Function calls
+
+    Local variables
+
+    Return addresses
+
+ How stack overflow happens:
+
+    Infinite recursion
+
+    Declaring very large local arrays
+
+-------------------------------------------------------------------
+File I/O
+
+1. fopen
+
+Purpose: Opens a file in a specified mode.
+
+Syntax:
+
+FILE *fopen(const char *filename, const char *mode);
+
+Modes:
+
+    "r" – read
+
+    "w" – write (truncate if exists)
+
+    "a" – append
+
+    "r+", "w+", "a+" – read/write variants
+
+    Add "b" for binary files (e.g., "rb")
+
+Example:
+
+FILE *fp = fopen("data.txt", "r");
+
+2. fclose
+
+Purpose: Closes an open file.
+
+Syntax:
+
+int fclose(FILE *stream);
+
+Example:
+
+fclose(fp);
+
+3. fprintf
+
+Purpose: Writes formatted output to a file (like printf, but to a file).
+
+Syntax:
+
+int fprintf(FILE *stream, const char *format, ...);
+
+Example:
+
+fprintf(fp, "Name: %s Age: %d\n", name, age);
+
+4. fscanf
+
+Purpose: Reads formatted input from a file (like scanf, but from a file).
+
+Syntax:
+
+int fscanf(FILE *stream, const char *format, ...);
+
+Example:
+
+fscanf(fp, "%s %d", name, &age);
+
+5. fread
+
+Purpose: Reads binary data from a file into memory.
+
+Syntax:
+
+size_t fread(void *ptr, size_t size, size_t count, FILE *stream);
+
+Example:
+
+fread(buffer, sizeof(char), 100, fp);  // reads 100 chars
+
+6. fwrite
+
+Purpose: Writes binary data from memory to a file.
+
+Syntax:
+
+size_t fwrite(const void *ptr, size_t size, size_t count, FILE *stream);
+
+Example:
+
+fwrite(buffer, sizeof(char), 100, fp);  // writes 100 chars
+
+7. fseek
+
+Purpose: Moves the file pointer to a specific location.
+
+Syntax:
+
+int fseek(FILE *stream, long int offset, int origin);
+
+origin values:
+
+    SEEK_SET – beginning of file
+
+    SEEK_CUR – current position
+
+    SEEK_END – end of file
+
+Example:
+
+fseek(fp, 0, SEEK_END);  // move to end of file
+
+
+
+example of opening and writing in a file-
+
+#include<stdio.h>
+#include<string.h>
+
+int main(void)
+{
+    // Open CSV file
+    FILE *file = fopen("phonebook.csv", "a");
+    if (!file)
+    {
+        return 1;
+    }
+
+    // Get name a number
+    char name[30];
+    char number[12];
+
+    printf("enter name: ");
+    scanf("%29s",name); // Limit input to avoid overflow
+    printf("\n");
+    printf("enter number: ");
+    scanf("%11s",number); //limit input
+    // Print to file
+    fprintf(file, "%s,%s\n", name, number);
+
+    // Close file
+    fclose(file);
+}
+
+-------------------------------------------------------------------
+copy a file 
+
+// Copies a file
+
+#include <stdio.h>
+#include <stdint.h>
+
+typedef uint8_t BYTE;
+
+int main(int argc, char *argv[])
+{
+    FILE *src = fopen(argv[1], "rb");
+    FILE *dst = fopen(argv[2], "wb");
+
+    BYTE b;
+
+    while (fread(&b, sizeof(b), 1, src) != 0)
+    {
+        fwrite(&b, sizeof(b), 1, dst);
+    }
+
+    fclose(dst);
+    fclose(src);
+}
+
+-----------------------------------------------------------------------
+Section 4
+
+Pointer to an integer- int *ptr
+
+Pointer stores the address of variable.
+
+*ptr gives us the value stored at ptr.
+
+
+type * is a pointer that stores the address of a type.
+*x takes a pointer x and goes to the address stored at
+that pointer.
+&x takes x and gets its address.
+
+#include<stdio.h>
+
+int main(void){
+int x = 4;
+
+int *ptr = &x;
+
+printf("%d\n",*ptr);
+
+}
+------------------------------------------------------------------
+File I/O
+
+● fopen open a file for future reading/writing
+● fclose closes a file
+Always fclose all the files you fopend’ed
+
+Example- 
+
+FILE *input = fopen("hi.txt", "r");
+
+Here *input is the pointer to FILE. fopen opens the file named hi.txt in read mode.
+
+● fread reads data from a file into a buffer
+● fwrite write data from a buffer to a file
+A buffer is a chunk of memory that can temporarily
+store some data from the file.
+
+example-
+fread(buffer, 1, 4, input);
+
+here input is the location to read from, 1 is the size of blocks to read (in bytes), 4 is for how many blocks to read, and Buffer is the Location to store blocks.
+
+fread
+○ To where?
+■ into buffer
+○ How many and what size?
+■ 4 blocks of size 1
+○ From where?
+■ from input
+
+fwrite example-
+fwrite(buffer, 1, 4, output)
+
+fwrite
+○ From where?
+■ from buffer
+○ How many and what size?
+■ 4 blocks of size 1
+○ To where?
+■ to output
+
+
+uint_8t - It is an unsigned integer , size of a byte.
+
+example code-
+
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
+
+int main(int argc, char *argv[])
+{
+    // Check for usage, must be 2 CLA
+    if (argc != 2)
+    {
+        printf("Please provide only one filename.\n");
+        return 1;
+    }
+
+    // Open file
+    FILE *input = fopen(argv[1], "r");
+
+    // Create buffer for file
+    uint8_t buffer[4];
+
+    // Create an array of signature bytes
+    uint8_t signature[] = {0x25, 0x50, 0x44, 0x46};
+
+    // Read first 4 bytes from the file
+    fread(buffer, sizeof(uint8_t), 4, input);
+
+    // Check the first 4 bytes again signature bytes
+    for (int i = 0; i < 4; i++)
+    {
+        if (signature[i] != buffer[i])
+        {
+            printf("This is not a PDF!\n");
+            return 0;
+        }
+    }
+
+    // Sucess!
+    printf("It is a PDF!\n");
+
+    // Close the file
+    fclose(input);
+
+    return 0;
+}
+
+-------------------------------------------------------------
+Shorts
+
+Video 1-
+Hexadecimal 
+
+ The hexadecimal system, aka base-16, is a much more concise
+way to express the data on a computer’s system
+
+0 1 2 3 4 5 6 7 8 9 a b c d e f
+
+Hexadecimal makes this mapping easy because a group of four
+binary digits (bits) is able has 16 different combinations, and
+each of those combinations maps to a single hexadecimal digit
+
+To convert a binary number to hexadecimal, group four binary
+digits (bits) together from right to left.
+• Pad the leftmost group with extra 0 bits at the front if necessary.
+
+256 16 1   that is 16^2 16^1 16^0   that is 16^2 16^1 16^0
+3   9  7   	    3     9    7	     A    D    C
+
+example- 
+01000110101000101011100100111101
+0100 0110 1010 0010 1011 1001 0011 1101
+  4   6    A    2    B    9    3    D
+
+---------------------------------------------------------------
+Video 2-
+
+Pointers
+
+Pointers provide an alternative way to pass data between
+functions.
+• Recall that up to this point, we have passed all data by value, with
+one exception.
+• When we pass data by value, we only pass a copy of that data.
+• If we use pointers instead, we have the power to pass the
+actual variable itself.
+• That means that a change that is made in one function can impact
+what happens in a different function.
+
+
+Disk drives are just storage space; we can’t directly work there.
+Manipulation and use of data can only take place in RAM, so
+we have to move data there.
+• Memory is basically a huge array of 8-bit wide bytes.
+• 512 MB, 1GB, 2GB, 4GB…
+
+
+Data Type 	Size (in bytes)
+int		 4
+char		 1
+float		 4
+double 		 8
+long long	 8
+
+char*, int*,
+float*,double*,  4 or 8
+
+
+each location in memory has an address.
+
+
+A pointer, then, is a data item whose
+• value is a memory address
+• type describes the data located at that memory address
+• As such, pointers allow data structures and/or variables to be
+shared among functions
+
+ The simplest pointer available to us in C is the NULL pointer.
+• As you might expect, this pointer points to nothing (a fact which can
+actually come in handy!)
+• When you create a pointer and you don’t set its value
+immediately, you should always set the value of the pointer to
+NULL.
+• You can check whether a pointer is NULL using the equality
+operator (==).
+
+The main purpose of a pointer is to allow us to modify or
+inspect the location to which it points.
+• We do this by dereferencing the pointer.
+• If we have a pointer-to-char called pc, then *pc is the data
+that lives at the memory address stored inside the variable pc.
+
+ * is known as the dereference operator.
+• It “goes to the reference” and accesses the data at that
+memory location, allowing you to manipulate it at will.
+
+what happens if we try to dereference a
+pointer whose value is NULL?
+answer- Segmentation fault
+
+example-
+
+int* p;
+
+• The value of p is an address.
+• We can dereference p with the * operator.
+• If we do, what we’ll find at that location is an int.
+
+
+---------------------------------------------------------------
+
+Video 3-
+
+Defining custom data types
+
+The C keyword typedef provides a way to create a shorthand or rewritten name for data types.
+
+example- typedef <old_name> <new_name>
+
+typedef unsigned char byte;
+so we can use byte instead of unsigned char whereever we have used it.
+
+--------------------------------------------------------------------
+
+Video 4-
+
+Dynamic Memory Allocation
+
+ We can use pointers to get access to a block of dynamically-
+allocated memory at runtime.
+• Dynamically allocated memory comes from a pool of memory
+known as the heap.
+• Prior to this point, all memory we’ve been working with has
+been coming from a pool of memory known as the stack.
+
+ We get this dynamically-allocated memory by making a call to
+the C standard library function malloc(), passing as its
+parameter the number of bytes requested.
+• After obtaining memory for you (if it can), malloc() will
+return a pointer to that memory.
+• What if malloc() can’t give you memory? It’ll hand you back
+NULL.
+
+
+// statically obtain an integer
+int x;
+// dynamically obtain an integer
+int *px = malloc(4);
+
+// dynamically obtain an integer
+int *px = malloc(sizeof(int));
+
+// get an integer from the user
+int x = GetInt();
+
+// array of floats on the stack
+float stack_array[x];
+
+// array of floats on the heap
+float* heap_array = malloc(x * sizeof(float));
+
+Here’s the trouble: Dynamically-allocated memory is not
+automatically returned to the system for later use when the
+function in which it’s created finishes execution.
+• Failing to return memory back to the system when you’re
+finished with it results in a memory leak which can
+compromise your system’s performance.
+• When you finish working with dynamically-allocated memory,
+you must free() it.
+
+example-
+
+char* word = malloc(50 * sizeof(char));
+// do stuff with word
+// now we’re done working with that block
+free(word);
+
+
+• Three golden rules:
+1. Every block of memory that you malloc() must
+subsequently be free()d.
+2. Only memory that you malloc() should be free()d.
+3. Do not free() a block of memory more than once.
+
+
+example-
+int m;
+int* a;
+int* b = malloc(sizeof(int));
+a = &m;
+a = b;
+m = 10;
+*b = m + 2;
+free(b);
+*a = 11; //this will lead to segmentation fault and program will crash.
+
+----------------------------------------------------------------
+
+Video 5-
+
+Call Stacks
+
+• When you call a function, the system sets aside space in
+memory for that function to do its necessary work.
+• We frequently call such chunks of memory stack frames or function
+frames.
+• More than one function’s stack frame may exist in memory at a
+given time. If main() calls move(), which then calls
+direction(), all three functions have open frames.
+
+• These frames are arranged in a stack. The frame for the most-
+recently called function is always on the top of the stack.
+• When a new function is called, a new frame is pushed onto the
+top of the stack and becomes the active frame.
+• When a function finishes its work, its frame is popped off of
+the stack, and the frame immediately below it becomes the
+new, active, function on the top of the stack. This function
+picks up immediately where it left off.
+
+-----------------------------------------------------------------
+
+Video 6-
+
+• The ability to read data from and write data to files is the
+primary means of storing persistent data, data that does not
+disappear when your program stops running.
+• The abstraction of files that C provides is implemented in a
+data structure known as a FILE.
+• Almost universally when working with files, we will be using pointers to them, FILE*.
+
+• The file manipulation functions all live in stdio.h.
+• All of them accept FILE* as one of their parameters, except for the
+function fopen(), which is used to get a file pointer in the first
+place.
+• Some of the most common file input/output (I/O) functions
+that we’ll be working with are: fopen() fclose() fgetc() fputc() fread() fwrite().
+
+
+• fopen()
+• Opens a file and returns a file pointer to it.
+• Always check the return value to make sure you don’t get back NULL.
+FILE* ptr = fopen(<filename>, <operation>);
+
+example-
+
+FILE* ptr1 = fopen(“file1.txt”, “r”);
+
+FILE* ptr2 = fopen(“file2.txt”, “w”);
+
+FILE* ptr3 = fopen(“file3.txt”, “a”);
+
+
+• fclose()
+• Closes the file pointed to by the given file pointer.
+fclose(<file pointer>);
+
+example-
+
+fclose(ptr1);
+
+
+
+• fgetc()
+• Reads and returns the next character from the file pointed to.
+• Note: The operation of the file pointer passed in as a parameter must
+be “r” for read, or you will suffer an error.
+char ch = fgetc(<file pointer>);
+
+
+example- char ch = fgetc(ptr1);
+
+
+
+The ability to get single characters from files, if wrapped in a
+loop, means we could read all the characters from a file and
+print them to the screen, one-by-one, essentially
+
+char ch;
+while((ch = fgetc(ptr)) != EOF)
+printf(“%c”, ch);
+
+We might put this in a file called cat.c, after the Linux
+command “cat” which essentially does just this.
+
+
+
+ fputc()
+• Writes or appends the specified character to the pointed-to file.
+• Note: The operation of the file pointer passed in as a parameter must
+be “w” for write or “a” for append, or you will suffer an error.
+fputc(<character>, <file pointer>);
+
+example-
+
+fputc(‘A’, ptr2);
+
+fputc(‘!’, ptr3);
+
+
+Now we can read characters from files and write characters to
+them. Let’s extend our previous example to copy one file to
+another, instead of printing to the screen.
+
+char ch;
+while((ch = fgetc(ptr)) != EOF)
+fputc(ch, ptr2);
+
+
+• We might put this in a file called cp.c, after the Linux
+command “cp” which essentially does just this.
+
+
+
+• fread()
+• Reads <qty> units of size <size> from the file pointed to and stores
+them in memory in a buffer (usually an array) pointed to by
+<buffer>.
+• Note: The operation of the file pointer passed in as a parameter must
+be “r” for read, or you will suffer an error.
+fread(<buffer>, <size>, <qty>, <file pointer>);
+
+example-
+
+1.int arr[10];
+fread(arr, sizeof(int), 10, ptr);
+
+2.double* arr2 = malloc(sizeof(double) * 80);
+fread(arr2, sizeof(double), 80, ptr);
+
+3.char c;
+fread(&c, sizeof(char), 1, ptr);
+
+
+• fwrite()
+• Writes <qty> units of size <size> to the file pointed to by reading
+them from a buffer (usually an array) pointed to by <buffer>.
+• Note: The operation of the file pointer passed in as a parameter must
+be “w” for write or “a” for append, or you will suffer an error.
+fwrite(<buffer>, <size>, <qty>, <file pointer>);
+
+example-
+
+1.int arr[10];
+fwrite(arr, sizeof(int), 10, ptr);
+
+2.double* arr2 = malloc(sizeof(double) * 80);
+fwrite(arr2, sizeof(double), 80, ptr);
+
+3.char c;
+fwrite(&c, sizeof(char), 1, ptr);
+
+
+
+Function 	Description
+fgets()		Reads a full string from a file.
+fputs() 	Writes a full string to a file.
+fprintf() 	Writes a formatted string to a file.
+fseek() 	Allows you rewind or fast-forward within a file.
+ftell() 	Tells you at what (byte) position you are at within a file.
+feof() 		Tells you whether you’ve read to the end of a file.
+ferror() 	Indicates whether an error has occurred in working with a file.
+
+---------------------------------------------------------------------
